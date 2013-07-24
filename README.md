@@ -3,9 +3,11 @@ I needed a way to play with facebook that did things like passport, but allowed 
 
 I decided that i would implement someone elses library to handle to oauth/facebook graph stuff, why reinvent a perfectly good wheel? I chose `fbgraph` and from experience it's one of the better facebook graph api wrappers for `node.js`
 
+![](https://badge.fury.io/js/express-fbauth.png)
+
 ### Usage
 ```md
-npm install git+https://github.com/dhigginbotham/express-fbauth
+npm install express-fbauth
 ```
 
 ### Example setup
