@@ -40,7 +40,7 @@ facebook = new fbauth(options);
 facebook.mount(app);
 
 // persist your session like you can in `passport.js`
-app.use facebook.session
+app.use(facebook.session);
 ```
 
 ## Options
