@@ -1,7 +1,7 @@
 ## Express FBAuth
-I needed a way to play with facebook that did things like passport, but allowed me to store things to different `req` objects, as well as send `res.locals` some goods.
+I needed a way to play with facebook that did things like passport, but allowed me to store things to different `req` objects, as well as send `res.locals` some goods. I decided that I would implement someone elses library to handle to oauth/facebook graph stuff, why reinvent a perfectly good wheel? I chose `fbgraph` and from experience it's one of the better facebook graph api wrappers for node. I plan on adding in a bunch of the auth routes so it's easy to return json from internal paths -- but thats all tbd once I get this proof of concept off the ground.
 
-I decided that i would implement someone elses library to handle to oauth/facebook graph stuff, why reinvent a perfectly good wheel? I chose `fbgraph` and from experience it's one of the better facebook graph api wrappers for `node.js`
+Use this as you choose, submit any errors and I'll fix them :)
 
 ![](https://badge.fury.io/js/express-fbauth.png)
 
@@ -24,11 +24,11 @@ var Model = require('./some/db/collection/path');
 // options you'll want to set... 
 var options = {
   model: Model,
-  prefix: "/auth/facebook"
+  prefix: "/auth/facebook",
   client_id: "CLIENT_ID",
   client_secret: "CLIENT_SECRET",
   redirect_uri: "http://localhost:3000/auth/facebook/callback",
-  scope: "email, publish_actions"
+  scope: "email, publish_actions",
   key: "optin",
   strategy: function (profile, fn) {
     // do a crud task with `mongoose` like `findAndUpdate` or `findAndCreate`
@@ -50,8 +50,8 @@ Key | Default | Description
 --- | --- | ---
 **model** | `null` | The users/optins model you want to use
 **prefix** | `/auth/facebook` | route prefix, ie `http://localhost:3000/auth/facebook`
-**redirect_uri** | `/callback` | you gotta have one,
-**callback_uri** | `/callback` | which is why it might be nice to have two..
+**redirect_uri** | `http://localhost:3000/auth/facebook/callback` | use full url path
+**callback_uri** | `/callback` | use last path ie `/callback`
 **client_id** | `null` | use the one from your facebook app
 **key** | `null` | almost anything works, however I am not sanitizing yet
 **client_secret** | `null` | use the one from your facebook app
