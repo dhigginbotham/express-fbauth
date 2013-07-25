@@ -113,6 +113,7 @@ facebook = (opts) ->
           else
             fn "Facebook lost your token while redirecting back here, please try again.", null
 
+  # auth functions, `serialize, deserialize, and ensureAuthenticated` reside
   @auth = new oauth self.model, self.key
   
   @authenticate = (req, res) ->
@@ -126,27 +127,41 @@ facebook = (opts) ->
   # build out a way to logout -- defaults to 
   # `/auth/facebook/logout` it'll have an option though
   @logout = (req, res) ->
+
+    # build a `route` for logging out / ie deleting your session
+    # easily enough to reproduce yourself if you so choose
     if req.session.hasOwnProperty(self._col)
       delete req.session[self._col]
       res.redirect "/"
     else
+
+      # back is a fancy fallback that will look for `referer` but
+      # give the home page if not found, safely.
       res.redirect "back"
 
   @mount = (app) ->
+
+    # build initial route point with oauth handler
     app.get self.prefix, self.oauth
 
+    # we're gonna do something fancy here if there isn't a strategy --
+    # we're going to store the whole shabang in to our session
     if self.strategy == null
       app.get self.prefix + self.callback_url, self.oauth, self.authenticate
     else
       app.get self.prefix + self.callback_url, self.oauth, self.authenticate, self.strategy
     
+    # give access to `/logout`
     app.get self.prefix + self.logout_url, self.logout
 
   # persistent session
   @session = (req, res, next) ->
 
+    # if the session exists, lets deserialize it so we can play with it in our
+    # application
     if req.session.hasOwnProperty(self._col)
       
+      # run those traps!
       self.auth.deserialize req.session[self._col], (err, deserialized) ->
         return if err? then next err, null
 
