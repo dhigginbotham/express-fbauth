@@ -38,11 +38,18 @@ var options = {
 // create your `facebook` object so you can do stuff
 facebook = new fbauth(options);
 
-// mount the auth routes
-facebook.mount(app);
-
 // persist your session like you can in `passport.js`
 app.use(facebook.session);
+
+// mount the auth routes
+facebook.mount(app);
+```
+
+You'll receive some routes based on this:
+
+```md
+http://localhost:3000/auth/facebook
+http://localhost:3000/auth/facebook/logout
 ```
 
 ## Options
