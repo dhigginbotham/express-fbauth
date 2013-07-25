@@ -13,10 +13,17 @@ facebook = (opts) ->
 
   # prefix for initial route listening
   @prefix = "/auth/facebook"
+
+  # add an option to set your logout prefix
+  @logout_url = @prefix + "/logout"
   
   # redirect uri for facebook oauth
   @redirect_uri = "/callback"
 
+  # callback_url is for validating your route
+  # however when i designed this i forked my brain
+  # for some reason, this will change -- or be gone
+  # completely.
   @callback_url = "/callback"
   
   # your facebook app id
@@ -36,6 +43,9 @@ facebook = (opts) ->
   if opts? then _.extend @, opts
 
   @_col = @key + "_id"
+  _logout = @prefix + @logout_url
+
+  @logout_url = _logout
 
   self = @
 
@@ -111,7 +121,16 @@ facebook = (opts) ->
       # set session to the `optin_id` so we can `pseudo` serialize
       req.session[self._col] = id
       # send optin to their referring page
-      res.redirect req.get "Referer"
+      res.redirect "back"
+
+  # build out a way to logout -- defaults to 
+  # `/auth/facebook/logout` it'll have an option though
+  @logout = (req, res) ->
+    if req.session.hasOwnProperty(self._col)
+      delete req.session[self._col]
+      res.redirect "/"
+    else
+      res.redirect "back"
 
   @mount = (app) ->
     app.get self.prefix, self.oauth
@@ -120,6 +139,8 @@ facebook = (opts) ->
       app.get self.prefix + self.callback_url, self.oauth, self.authenticate
     else
       app.get self.prefix + self.callback_url, self.oauth, self.authenticate, self.strategy
+    
+    app.get self.prefix + self.logout_url, self.logout
 
   # persistent session
   @session = (req, res, next) ->

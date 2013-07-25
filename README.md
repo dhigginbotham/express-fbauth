@@ -50,6 +50,7 @@ Key | Default | Description
 --- | --- | ---
 **model** | `null` | The users/optins model you want to use
 **prefix** | `/auth/facebook` | route prefix, ie `http://localhost:3000/auth/facebook`
+**logout** | `/auth/facebook/logout` | defaults to `prefix + /logout`
 **redirect_uri** | `http://localhost:3000/auth/facebook/callback` | use full url path
 **callback_uri** | `/callback` | use last path ie `/callback`
 **client_id** | `null` | use the one from your facebook app

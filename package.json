@@ -1,6 +1,6 @@
 {
   "name": "express-fbauth",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "super simple fb auth module built to expect mongodb like api's with a persistant session much like passport",
   "keywords": [
     "mongoose",
