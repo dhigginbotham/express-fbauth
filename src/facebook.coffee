@@ -120,23 +120,21 @@ facebook = (opts) ->
       app.get self.prefix + self.callback_url, self.oauth, self.authenticate
     else
       app.get self.prefix + self.callback_url, self.oauth, self.authenticate, self.strategy
-  @
 
-# persistent session
-facebook::session = (req, res, next) ->
+  # persistent session
+  @session = (req, res, next) ->
 
-  # we need some scope here!!
-  self = @
-
-  if req.session.hasOwnProperty(self._col)
-    
-    self.deserialize req.session[self._col], (err, deserialized) ->
-      return if err? then next err, null
-
-      if deserialized? then req[self.key] = res.locals[self.key] = deserialized
+    if req.session.hasOwnProperty(self._col)
       
-      next()
+      self.auth.deserialize req.session[self._col], (err, deserialized) ->
+        return if err? then next err, null
 
-  else next()
+        if deserialized? then req[self.key] = res.locals[self.key] = deserialized
+        
+        next()
+
+    else next()
+
+  @
 
 module.exports = facebook
