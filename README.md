@@ -36,7 +36,7 @@ var options = {
 };
 
 // create your `facebook` object so you can do stuff
-facebook = new fbauth(options);
+var facebook = new fbauth(options);
 
 // persist your session like you can in `passport.js`
 app.use(facebook.session);
